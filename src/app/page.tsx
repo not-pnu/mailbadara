@@ -1,3 +1,5 @@
+import SubscribeForm from '@/app/_component/SubscribeForm';
+
 export default function Home() {
     return (
         <main className={'flex h-full w-full flex-col items-center bg-black text-center text-white'}>
@@ -12,8 +14,8 @@ export default function Home() {
                 <br />
                 정보를 손에 넣을 수 있을 것이다
             </p>
-            <div className={'absolute bottom-24 left-0 right-0 mx-auto flex w-full flex-col items-center gap-y-12'}>
-                <button className={'h-48 w-295 rounded-4 font-NanumMyeongjo text-32 text-white'}>시작하기 Start</button>
+            <div className={'absolute bottom-24 left-0 right-0 mx-auto'}>
+                <SubscribeForm />
             </div>
         </main>
     );
