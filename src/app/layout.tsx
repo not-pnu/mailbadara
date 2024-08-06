@@ -1,10 +1,5 @@
-import type {Metadata} from 'next';
-import {Inter} from 'next/font/google';
+import type { Metadata } from 'next';
 import '@/styles/globals.css';
-import Providers from '@/app/_component/Providers';
-
-
-const inter = Inter({subsets: ['latin']});
 
 export const metadata: Metadata = {
     title: '메일바다라',
@@ -12,15 +7,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
-                                       children,
-                                   }: Readonly<{
+    children,
+}: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
         <html lang="ko">
-            <body className={inter.className}>
-                <Providers>{children}</Providers>
-            </body>
+            <body className={'relative'}>{children}</body>
         </html>
     );
 }
