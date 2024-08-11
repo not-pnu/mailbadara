@@ -6,6 +6,7 @@ import { getDepartmentNameList, postSubscribe } from '@/api/subscribe';
 import { cls } from '@/utils/tailwind';
 import { useSubscribeFormStore } from '@/stores/useSubscribeFormStore';
 import { EDescription } from '@/enums/subscribe';
+import { isEmail } from '@/utils/regex';
 
 export default function SubscribeForm() {
     const [departmentList, setDepartmentList] = useState<IDepartmentName>({ cse: '정보컴퓨터공학부' });
@@ -46,7 +47,7 @@ export default function SubscribeForm() {
             }
             onNextStep();
         } else if (step === 2) {
-            if (!inputEmail || inputEmail.length === 0) {
+            if (!inputEmail || inputEmail.length === 0 || !isEmail(inputEmail)) {
                 setDescriptionType(EDescription.WARNING);
                 return;
             }

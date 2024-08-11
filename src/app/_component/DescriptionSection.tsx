@@ -2,7 +2,6 @@
 
 import { useSubscribeFormStore } from '@/stores/useSubscribeFormStore';
 import { EDescription } from '@/enums/subscribe';
-import { useSearchParams } from 'next/navigation';
 import { cls } from '@/utils/tailwind';
 
 export default function DescriptionSection() {
