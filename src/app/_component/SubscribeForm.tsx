@@ -10,7 +10,7 @@ import { isEmail } from '@/utils/regex';
 
 export default function SubscribeForm() {
     const [departmentList, setDepartmentList] = useState<IDepartmentName>({ cse: '정보컴퓨터공학부' });
-    const [selectedDepartment, setSelectedDepartment] = useState<string | null>('정보컴퓨터공학부');
+    const [selectedDepartmentCode, setSelectedDepartmentCode] = useState<string | null>('cse');
     const [inputEmail, setInputEmail] = useState<string | null>('min49590@gmail.com');
     const { step, onNextStep, setDescriptionType, reset } = useSubscribeFormStore();
 
@@ -23,12 +23,12 @@ export default function SubscribeForm() {
         })();
     }, []);
 
-    const onClickDepartment = (_department: string) => {
-        setSelectedDepartment((prev) => {
-            if (prev === _department) {
+    const onClickDepartment = (_code: string) => {
+        setSelectedDepartmentCode((prev) => {
+            if (prev === _code) {
                 return null;
             }
-            return _department;
+            return _code;
         });
         setDescriptionType(EDescription.DEFAULT);
     };
@@ -41,7 +41,7 @@ export default function SubscribeForm() {
         if (step === 0) {
             onNextStep();
         } else if (step === 1) {
-            if (!selectedDepartment) {
+            if (!selectedDepartmentCode) {
                 setDescriptionType(EDescription.WARNING);
                 return;
             }
@@ -56,7 +56,7 @@ export default function SubscribeForm() {
         } else if (step === 3) {
             // todo: postSubscribe
             setDescriptionType(EDescription.WAITING);
-            const res = await postSubscribe(inputEmail!, selectedDepartment!);
+            const res = await postSubscribe(inputEmail!, selectedDepartmentCode!);
             if (res.result && res.data) {
                 if (res.data === 'SUCCESS') {
                     setDescriptionType(EDescription.ALERT_MAIL);
@@ -76,7 +76,7 @@ export default function SubscribeForm() {
 
     const handleReset = () => {
         reset();
-        setSelectedDepartment(null);
+        setSelectedDepartmentCode(null);
         setInputEmail(null);
     };
 
@@ -85,7 +85,7 @@ export default function SubscribeForm() {
             {step === 1 && (
                 <DepartmentSelectBox
                     departmentList={departmentList}
-                    selectedDepartment={selectedDepartment}
+                    selectedDepartmentCode={selectedDepartmentCode}
                     onClickDepartment={onClickDepartment}
                 />
             )}
@@ -98,7 +98,7 @@ export default function SubscribeForm() {
             )}
             {step === 3 && (
                 <BranchSection
-                    selectedDepartment={selectedDepartment}
+                    selectedDepartment={departmentList[selectedDepartmentCode!] || ''}
                     inputEmail={inputEmail}
                     handleReset={handleReset}
                     handleSubscribe={handleForm}
@@ -134,11 +134,11 @@ function CardButton({ title, description, onClick }: { title: string; descriptio
 
 function DepartmentSelectBox({
     departmentList,
-    selectedDepartment,
+    selectedDepartmentCode,
     onClickDepartment,
 }: {
     departmentList: IDepartmentName;
-    selectedDepartment: string | null;
+    selectedDepartmentCode: string | null;
     onClickDepartment: (department: string) => void;
 }) {
     return (
@@ -148,18 +148,17 @@ function DepartmentSelectBox({
                 'scroll-hidden flex h-144 w-440 flex-col overflow-y-scroll rounded-4 bg-white text-black md:w-full'
             }
         >
-            {Object.keys(departmentList).map((key) => {
+            {Object.keys(departmentList).map((code) => {
                 return (
                     <button
-                        key={key}
-                        value={departmentList[key]}
-                        onClick={() => onClickDepartment(departmentList[key])}
+                        key={code}
+                        onClick={() => onClickDepartment(code)}
                         className={cls(
                             'mx-4 mt-4 w-full rounded-4 hover:bg-gray-200',
-                            selectedDepartment === departmentList[key] ? 'font-bold' : '',
+                            selectedDepartmentCode === code ? 'font-bold' : '',
                         )}
                     >
-                        {departmentList[key]}
+                        {departmentList[code]}
                     </button>
                 );
             })}
