@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: false,
     output: 'export',
-    basePath: "/mailbadara",
+    basePath: '/mailbadara',
     images: {
         unoptimized: true,
     },
