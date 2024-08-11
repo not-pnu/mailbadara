@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IDepartmentName } from '@/types/department';
 import { getDepartmentNameList, postSubscribe } from '@/api/subscribe';
 import { cls } from '@/utils/tailwind';
@@ -80,7 +80,7 @@ export default function SubscribeForm() {
     };
 
     return (
-        <form className={'flex w-full flex-col items-center gap-y-12'} onSubmit={onSubmit}>
+        <form className={'flex h-full flex-col items-center justify-end gap-y-12'} onSubmit={onSubmit}>
             {step === 1 && (
                 <DepartmentSelectBox
                     departmentList={departmentList}
@@ -90,7 +90,7 @@ export default function SubscribeForm() {
             )}
             {step === 2 && (
                 <input
-                    className={'h-48 w-440 rounded-4 px-12 font-NanumMyeongjo text-18 text-black'}
+                    className={'h-48 w-440 rounded-4 px-12 font-NanumMyeongjo text-18 text-black md:w-full'}
                     placeholder={'이메일을 입력하라.'}
                     onChange={onInputEmail}
                 />
@@ -105,7 +105,7 @@ export default function SubscribeForm() {
             )}
             <button
                 className={cls(
-                    'h-48 w-440 animate-pulse rounded-4 font-NanumMyeongjo text-24 text-white',
+                    'h-48 w-440 animate-pulse rounded-4 font-NanumMyeongjo text-24 text-white md:h-fit md:w-full',
                     step < 3 ? '' : 'hidden',
                 )}
                 onClick={handleForm}
@@ -120,12 +120,13 @@ function CardButton({ title, description, onClick }: { title: string; descriptio
     return (
         <button
             onClick={onClick}
-            className={
-                'flex h-360 max-h-full w-400 flex-col items-center rounded-4 border border-white p-24 text-white transition-all duration-300 hover:scale-105'
-            }
+            className={cls(
+                'flex h-360 max-h-full w-400 flex-col items-center rounded-4 border border-white p-24 text-white transition-all duration-300 hover:scale-105',
+                'scroll-hidden md:h-full md:w-full md:overflow-y-scroll md:transition-none md:hover:scale-100',
+            )}
         >
-            <h3 className={'font-NanumMyeongjo text-24 font-bold'}>{title}</h3>
-            <p className={'mt-24 whitespace-pre-wrap text-start font-NanumMyeongjo text-18'}>&nbsp;{description}</p>
+            <h3 className={'text-24 font-bold'}>{title}</h3>
+            <p className={'mt-24 whitespace-pre-wrap text-start text-18'}>&nbsp;{description}</p>
         </button>
     );
 }
@@ -142,7 +143,9 @@ function DepartmentSelectBox({
     return (
         <div
             id="department-select-box"
-            className={'scroll-hidden flex h-144 w-440 flex-col overflow-y-scroll rounded-4 bg-white text-black'}
+            className={
+                'scroll-hidden flex h-144 w-440 flex-col overflow-y-scroll rounded-4 bg-white text-black md:w-full'
+            }
         >
             {Object.keys(departmentList).map((key) => {
                 return (
@@ -174,8 +177,16 @@ function BranchSection({
     handleReset: () => void;
     handleSubscribe: () => void;
 }) {
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (ref.current) {
+            ref.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, []);
+
     return (
-        <div className={'flex h-full w-full justify-between gap-x-24 px-48'}>
+        <div className={'flex w-full justify-between gap-x-24 md:flex-col md:gap-y-24'}>
             <CardButton
                 title={'구독하기 Subscribe'}
                 description={
@@ -183,14 +194,16 @@ function BranchSection({
                 }
                 onClick={handleSubscribe}
             />
-            <div
-                className={
-                    'absolute bottom-0 left-0 right-0 top-102 m-auto flex animate-pulse flex-col items-center font-NanumMyeongjo text-24 font-bold'
-                }
+            <p
+                ref={ref}
+                className={cls(
+                    'bottom-0 left-0 right-0 top-102 m-auto flex animate-pulse flex-col items-center font-NanumMyeongjo text-24 font-bold text-white',
+                    'md:static',
+                )}
             >
                 <span>{selectedDepartment}</span>
                 <span>{inputEmail}</span>
-            </div>
+            </p>
             <CardButton
                 title={'취소하기 Cancle'}
                 description={

@@ -13,7 +13,21 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ko">
-            <body className={'relative min-h-screen w-screen'}>{children}</body>
+            <body className={'relative'}>
+                <main className={'flex flex-col items-center bg-black text-center text-white'}>
+                    <div
+                        className={
+                            'scroll-hidden relative flex h-screen min-h-screen max-w-1440 flex-col overflow-y-scroll'
+                        }
+                    >
+                        <h1 className={'text-295 font-bold leading-295 md:text-120 md:leading-144'}>
+                            메일
+                            <br className={'hidden md:block'} /> 받아라
+                        </h1>
+                        {children}
+                    </div>
+                </main>
+            </body>
         </html>
     );
 }

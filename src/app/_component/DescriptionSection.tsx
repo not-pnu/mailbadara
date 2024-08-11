@@ -3,6 +3,7 @@
 import { useSubscribeFormStore } from '@/stores/useSubscribeFormStore';
 import { EDescription } from '@/enums/subscribe';
 import { useSearchParams } from 'next/navigation';
+import { cls } from '@/utils/tailwind';
 
 export default function DescriptionSection() {
     const { descriptionType } = useSubscribeFormStore((state) => ({
@@ -30,18 +31,27 @@ export default function DescriptionSection() {
         }
     };
 
-    return <div className={'flex h-240 flex-col items-center justify-center'}>{getDescription()}</div>;
+    return (
+        <div
+            className={cls(
+                'mt-12 flex h-240 w-full flex-col items-center justify-center font-NanumMyeongjo text-18',
+                'md:h-fit',
+            )}
+        >
+            {getDescription()}
+        </div>
+    );
 }
 
 function DefaultDescription() {
     return (
         <>
-            <p className={'mt-12 font-NanumMyeongjo text-18'}>
+            <p>
                 학과를 고르고
                 <br />
                 이메일을 입력하라
             </p>
-            <p className={'mt-48 font-NanumMyeongjo text-18'}>
+            <p className={'mt-48'}>
                 그리하면
                 <br />
                 원하는 것을 손에 넣을 수 있을 것이다
@@ -51,25 +61,25 @@ function DefaultDescription() {
 }
 
 function WarningDescription() {
-    return <p className={'mt-12 font-NanumMyeongjo text-18'}>똑바로 입력해라.</p>;
+    return <p>똑바로 입력해라.</p>;
 }
 
 function BranchDescription() {
-    return <p className={'mt-12 font-NanumMyeongjo text-18'}>선택의 시간이다.</p>;
+    return <p>선택의 시간이다.</p>;
 }
 
 function WaitingDescription() {
-    return <p className={'mt-12 font-NanumMyeongjo text-18'}>...</p>;
+    return <p>...</p>;
 }
 
 function AlertMailDescription() {
-    return <p className={'mt-12 font-NanumMyeongjo text-18'}>이메일을 확인해라.</p>;
+    return <p>이메일을 확인해라.</p>;
 }
 
 function DuplicateDescription() {
-    return <p className={'mt-12 font-NanumMyeongjo text-18'}>넌 이미 구독 중이다.</p>;
+    return <p>넌 이미 구독 중이다.</p>;
 }
 
 function ErrorDescription() {
-    return <p className={'mt-12 font-NanumMyeongjo text-18 text-red-500'}>문제가 발생했다. 다음에 다시 오도록</p>;
+    return <p className={'text-red-500'}>문제가 발생했다. 다음에 다시 오도록</p>;
 }
