@@ -125,7 +125,7 @@ function CardButton({ title, description, onClick }: { title: string; descriptio
             }
         >
             <h3 className={'font-NanumMyeongjo text-24 font-bold'}>{title}</h3>
-            <p className={'mt-24 text-start font-NanumMyeongjo text-18'}>&nbsp;{description}</p>
+            <p className={'mt-24 whitespace-pre-wrap text-start font-NanumMyeongjo text-18'}>&nbsp;{description}</p>
         </button>
     );
 }
@@ -178,7 +178,9 @@ function BranchSection({
         <div className={'flex h-full w-full justify-between gap-x-24 px-48'}>
             <CardButton
                 title={'구독하기 Subscribe'}
-                description={'매일 특정 시간에 선택한 학과에서 소식을 가져와 구독신청한 이메일로 보내드립니다.'}
+                description={
+                    '매일 특정 시간에 선택한 학과에서 소식을 가져와 구독신청한 이메일로 보내드립니다.\n\n Every day, we will take news from the department of your choice at a specific time and send it to the email you signed up for.'
+                }
                 onClick={handleSubscribe}
             />
             <div
@@ -191,7 +193,9 @@ function BranchSection({
             </div>
             <CardButton
                 title={'취소하기 Cancle'}
-                description={'모든 상태를 초기화합니다. 아무 일도 일어나지 않습니다.'}
+                description={
+                    '모든 상태를 초기화합니다. 아무 일도 일어나지 않습니다.\n\n Initialize all states, Nothing happens.'
+                }
                 onClick={handleReset}
             />
         </div>

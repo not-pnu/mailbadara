@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ko">
-            <body className={'relative h-screen w-screen'}>{children}</body>
+            <body className={'relative min-h-screen w-screen'}>{children}</body>
         </html>
     );
 }

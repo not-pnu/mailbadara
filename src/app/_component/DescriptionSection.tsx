@@ -2,9 +2,13 @@
 
 import { useSubscribeFormStore } from '@/stores/useSubscribeFormStore';
 import { EDescription } from '@/enums/subscribe';
+import { useSearchParams } from 'next/navigation';
 
 export default function DescriptionSection() {
-    const descriptionType = useSubscribeFormStore((state) => state.descriptionType);
+    const { descriptionType } = useSubscribeFormStore((state) => ({
+        descriptionType: state.descriptionType,
+    }));
+
     const getDescription = () => {
         switch (descriptionType) {
             case EDescription.DEFAULT:
@@ -63,9 +67,9 @@ function AlertMailDescription() {
 }
 
 function DuplicateDescription() {
-    return <p className={'mt-12 font-NanumMyeongjo text-18'}>이미 구독 중이다.</p>;
+    return <p className={'mt-12 font-NanumMyeongjo text-18'}>넌 이미 구독 중이다.</p>;
 }
 
 function ErrorDescription() {
-    return <p className={'mt-12 font-NanumMyeongjo text-18 text-red-500'}>문제가 발생했다.</p>;
+    return <p className={'mt-12 font-NanumMyeongjo text-18 text-red-500'}>문제가 발생했다. 다음에 다시 오도록</p>;
 }
