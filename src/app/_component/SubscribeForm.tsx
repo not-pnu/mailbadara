@@ -10,8 +10,8 @@ import { isEmail } from '@/utils/regex';
 
 export default function SubscribeForm() {
     const [departmentList, setDepartmentList] = useState<IDepartmentName>({ cse: '정보컴퓨터공학부' });
-    const [selectedDepartmentCode, setSelectedDepartmentCode] = useState<string | null>('cse');
-    const [inputEmail, setInputEmail] = useState<string | null>('min49590@gmail.com');
+    const [selectedDepartmentCode, setSelectedDepartmentCode] = useState<string | null>(null);
+    const [inputEmail, setInputEmail] = useState<string | null>(null);
     const { step, onNextStep, setDescriptionType, reset } = useSubscribeFormStore();
 
     useEffect(() => {
