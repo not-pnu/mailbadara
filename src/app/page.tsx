@@ -1,5 +1,5 @@
 import SubscribeForm from '@/app/_component/SubscribeForm';
-import DescriptionSection from '@/app/_component/DescriptionSection';
+import DescriptionSection from '@/app/_section/DescriptionSection';
 
 export default function Home() {
   return (

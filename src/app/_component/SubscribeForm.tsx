@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IDepartmentName } from '@/types/department';
 import { getDepartmentNameList, postSubscribe } from '@/api/subscribe';
 import { cls } from '@/utils/tailwind';
 import { useSubscribeFormStore } from '@/stores/useSubscribeFormStore';
 import { EDescription } from '@/enums/subscribe';
 import { isEmail } from '@/utils/regex';
+import BranchSection from '@/app/_section/BranchSection';
+import { MoonLoader } from 'react-spinners';
 
 export default function SubscribeForm() {
   const [departmentList, setDepartmentList] = useState<IDepartmentName>({
@@ -41,25 +43,32 @@ export default function SubscribeForm() {
   const onInputEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputEmail(e.target.value);
   };
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleForm = async () => {
+    if (isLoading) {
+      return;
+    }
+    setIsLoading(true);
+
     if (step === 0) {
       onNextStep();
     } else if (step === 1) {
       if (!selectedDepartmentCode) {
         setDescriptionType(EDescription.WARNING);
+        setIsLoading(false);
         return;
       }
       onNextStep();
     } else if (step === 2) {
       if (!inputEmail || inputEmail.length === 0 || !isEmail(inputEmail)) {
         setDescriptionType(EDescription.WARNING);
+        setIsLoading(false);
         return;
       }
       setDescriptionType(EDescription.BRANCH);
       onNextStep();
     } else if (step === 3) {
-      // todo: postSubscribe
       setDescriptionType(EDescription.WAITING);
       const res = await postSubscribe(inputEmail!, selectedDepartmentCode!);
       if (res.result && res.data) {
@@ -73,6 +82,7 @@ export default function SubscribeForm() {
         setDescriptionType(EDescription.ERROR);
       }
     }
+    setIsLoading(false);
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -109,6 +119,7 @@ export default function SubscribeForm() {
         <BranchSection
           selectedDepartment={departmentList[selectedDepartmentCode!] || ''}
           inputEmail={inputEmail}
+          isLoading={isLoading}
           handleReset={handleReset}
           handleSubscribe={handleForm}
         />
@@ -121,31 +132,15 @@ export default function SubscribeForm() {
         onClick={handleForm}>
         {step === 0 ? '시작하기 Start' : '다음으로 Next'}
       </button>
+      {isLoading && (
+        <div
+          className={
+            'absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center bg-black bg-opacity-50'
+          }>
+          <MoonLoader color={'#ffffff'} loading={isLoading} size={50} />
+        </div>
+      )}
     </form>
-  );
-}
-
-function CardButton({
-  title,
-  description,
-  onClick,
-}: {
-  title: string;
-  description: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={cls(
-        'flex h-360 max-h-full w-400 flex-col items-center rounded-4 border border-white p-24 text-white transition-all duration-300 hover:scale-105',
-        'scroll-hidden md:h-full md:w-full md:overflow-y-scroll md:transition-none md:hover:scale-100',
-      )}>
-      <h3 className={'text-24 font-bold'}>{title}</h3>
-      <p className={'mt-24 whitespace-pre-wrap text-start text-18'}>
-        &nbsp;{description}
-      </p>
-    </button>
   );
 }
 
@@ -177,57 +172,6 @@ function DepartmentSelectBox({
           </button>
         );
       })}
-    </div>
-  );
-}
-
-function BranchSection({
-  selectedDepartment,
-  inputEmail,
-  handleReset,
-  handleSubscribe,
-}: {
-  selectedDepartment: string | null;
-  inputEmail: string | null;
-  handleReset: () => void;
-  handleSubscribe: () => void;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, []);
-
-  return (
-    <div
-      className={
-        'flex w-full justify-between gap-x-24 md:flex-col md:gap-y-24'
-      }>
-      <CardButton
-        title={'구독하기 Subscribe'}
-        description={
-          '매일 특정 시간에 선택한 학과에서 소식을 가져와 구독신청한 이메일로 보내드립니다.\n\n Every day, we will take news from the department of your choice at a specific time and send it to the email you signed up for.'
-        }
-        onClick={handleSubscribe}
-      />
-      <p
-        ref={ref}
-        className={cls(
-          'bottom-0 left-0 right-0 top-102 m-auto flex animate-pulse flex-col items-center font-NanumMyeongjo text-24 font-bold text-white',
-          'md:static',
-        )}>
-        <span>{selectedDepartment}</span>
-        <span>{inputEmail}</span>
-      </p>
-      <CardButton
-        title={'취소하기 Cancle'}
-        description={
-          '모든 상태를 초기화합니다. 아무 일도 일어나지 않습니다.\n\n Initialize all states, Nothing happens.'
-        }
-        onClick={handleReset}
-      />
     </div>
   );
 }
