@@ -10,18 +10,18 @@ import { Fetchy } from '@/lib/Fetchy';
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 class ClientFetchy extends Fetchy {
-    constructor() {
-        super({
-            baseUrl: BASE_URL,
-            handlers: {
-                onError: (error: any) => {
-                    alert(error);
-                    console.error('[Error] client-fetchy', error);
-                    return;
-                },
-            },
-        });
-    }
+  constructor() {
+    super({
+      baseUrl: BASE_URL,
+      handlers: {
+        onError: (error: any) => {
+          alert(error);
+          console.error('[Error] client-fetchy', error);
+          return;
+        },
+      },
+    });
+  }
 }
 
 export const clientFetchy = new ClientFetchy();

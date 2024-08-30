@@ -1,10 +1,10 @@
 export interface IDepartmentName {
-    [key: string]: string;
+  [key: string]: string;
 }
 
 export interface IDepartment {
-    code: string;
-    name: string;
-    board_names: string[];
-    boards: string[];
+  code: string;
+  name: string;
+  board_names: string[];
+  boards: string[];
 }
