@@ -54,9 +54,7 @@ export default function SubscribeForm() {
     setIsLoading(true);
 
     if (step === 0) {
-      sendGAEvent('event', 'buttonClicked', {
-        value: 'start-subscribe',
-      });
+      sendGAEvent('event', 'start-subscribe');
       onNextStep();
     } else if (step === 1) {
       if (!selectedDepartmentCode) {
@@ -64,8 +62,7 @@ export default function SubscribeForm() {
         setIsLoading(false);
         return;
       }
-      sendGAEvent('event', 'buttonClicker', {
-        value: 'click-step-1',
+      sendGAEvent('event', 'click-step-1', {
         departmentCode: selectedDepartmentCode,
       });
       onNextStep();
@@ -75,14 +72,11 @@ export default function SubscribeForm() {
         setIsLoading(false);
         return;
       }
-      sendGAEvent('event', 'buttonClicked', {
-        value: 'click-step-2',
-      });
+      sendGAEvent('event', 'click-step-2');
       setDescriptionType(EDescription.BRANCH);
       onNextStep();
     } else if (step === 3) {
-      sendGAEvent('event', 'buttonClicker', {
-        value: 'click-subscribe',
+      sendGAEvent('event', 'click-subscribe', {
         departmentCode: selectedDepartmentCode,
       });
       setDescriptionType(EDescription.WAITING);
@@ -106,9 +100,7 @@ export default function SubscribeForm() {
   };
 
   const handleReset = () => {
-    sendGAEvent('event', 'buttonClicker', {
-      value: 'reset-state',
-    });
+    sendGAEvent('event', 'reset-state');
     reset();
     setSelectedDepartmentCode(null);
     setInputEmail(null);
