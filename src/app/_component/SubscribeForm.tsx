@@ -10,6 +10,7 @@ import { isEmail } from '@/utils/regex';
 import BranchSection from '@/app/_section/BranchSection';
 import { sendGAEvent } from '@next/third-parties/google';
 import { MoonLoader } from 'react-spinners';
+import { MdOutlineKeyboardDoubleArrowDown } from 'react-icons/md';
 
 export default function SubscribeForm() {
   const [departmentList, setDepartmentList] = useState<IDepartmentName>({
@@ -140,6 +141,13 @@ export default function SubscribeForm() {
           isLoading={isLoading}
           handleReset={handleReset}
           handleSubscribe={handleForm}
+        />
+      )}
+      {step === 0 && (
+        <MdOutlineKeyboardDoubleArrowDown
+          color={'white'}
+          size={'48'}
+          className={'animate-bounce'}
         />
       )}
       <button
