@@ -11,6 +11,7 @@
     "format": "prettier --write . --cache"
   },
   "dependencies": {
+    "@next/third-parties": "^14.2.11",
     "framer-motion": "^11.3.19",
     "next": "14.2.5",
     "react": "^18",

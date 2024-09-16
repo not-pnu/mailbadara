@@ -8,6 +8,7 @@ import { useSubscribeFormStore } from '@/stores/useSubscribeFormStore';
 import { EDescription } from '@/enums/subscribe';
 import { isEmail } from '@/utils/regex';
 import BranchSection from '@/app/_section/BranchSection';
+import { sendGAEvent } from '@next/third-parties/google';
 import { MoonLoader } from 'react-spinners';
 
 export default function SubscribeForm() {
@@ -52,6 +53,9 @@ export default function SubscribeForm() {
     setIsLoading(true);
 
     if (step === 0) {
+      sendGAEvent('event', 'buttonClicked', {
+        value: 'start-subscribe',
+      });
       onNextStep();
     } else if (step === 1) {
       if (!selectedDepartmentCode) {
@@ -59,6 +63,10 @@ export default function SubscribeForm() {
         setIsLoading(false);
         return;
       }
+      sendGAEvent('event', 'buttonClicker', {
+        value: 'click-step-1',
+        departmentCode: selectedDepartmentCode,
+      });
       onNextStep();
     } else if (step === 2) {
       if (!inputEmail || inputEmail.length === 0 || !isEmail(inputEmail)) {
@@ -66,9 +74,16 @@ export default function SubscribeForm() {
         setIsLoading(false);
         return;
       }
+      sendGAEvent('event', 'buttonClicked', {
+        value: 'click-step-2',
+      });
       setDescriptionType(EDescription.BRANCH);
       onNextStep();
     } else if (step === 3) {
+      sendGAEvent('event', 'buttonClicker', {
+        value: 'click-subscribe',
+        departmentCode: selectedDepartmentCode,
+      });
       setDescriptionType(EDescription.WAITING);
       const res = await postSubscribe(inputEmail!, selectedDepartmentCode!);
       if (res.result && res.data) {
@@ -90,6 +105,9 @@ export default function SubscribeForm() {
   };
 
   const handleReset = () => {
+    sendGAEvent('event', 'buttonClicker', {
+      value: 'reset-state',
+    });
     reset();
     setSelectedDepartmentCode(null);
     setInputEmail(null);

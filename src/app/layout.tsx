@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import { GoogleTagManager, GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
   title: '메일바다라',
@@ -26,7 +27,6 @@ export const metadata: Metadata = {
     follow: true,
   },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,6 +34,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <GoogleTagManager gtmId="GTM-NZ254MB4" />
+      <GoogleAnalytics gaId="G-WKVHJFFGJ5" />
       <body className={'relative'}>
         <main
           className={
